@@ -8,8 +8,8 @@ import requests
 import time
 from supabase import create_client, Client
 
-supabase_url = "https://ksqqpkpdftgrcjtsbcjj.supabase.co"
-supabase_key = "sb_publishable_NHL4sYeOyeQg9iGBsedg8g_cOZXPX0l"
+supabase_url = "API URL"
+supabase_key = "API Publishable Key"
 supabase: Client = create_client(supabase_url, supabase_key)
 
 screenshot_dir = "screenshots"
