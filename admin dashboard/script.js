@@ -6,8 +6,8 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
-const SUPABASE_URL = "https://ksqqpkpdftgrcjtsbcjj.supabase.co";
-const SUPABASE_KEY = "sb_publishable_NHL4sYeOyeQg9iGBsedg8g_cOZXPX0l";
+const SUPABASE_URL = "API URL";
+const SUPABASE_KEY = "API Publishable Key";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: { persistSession: true }
 });
