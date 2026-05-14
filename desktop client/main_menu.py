@@ -4,8 +4,8 @@ from supabase import create_client, Client
 import os
 import sys
 
-supabase_url = "https://ksqqpkpdftgrcjtsbcjj.supabase.co"
-supabase_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzcXFwa3BkZnRncmNqdHNiY2pqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwOTgzMjksImV4cCI6MjA5MzY3NDMyOX0.Aw3f26ZsPrpHJdfLJsgXpKKMgwo1ZTnMjhnfCyMin78"
+supabase_url = "API URL"
+supabase_key = "Anon Public Key"
 supabase: Client = create_client(supabase_url, supabase_key)
 
 def resource_path(relative_path):
