@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIGAB-AI — Sistem Pengawasan Pantai</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="wave-bg">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" fill="white">
+    <path d="M0,60 C180,100 360,20 540,60 C720,100 900,20 1080,60 C1260,100 1380,40 1440,60 L1440,120 L0,120Z"/>
+  </svg>
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" fill="white">
+    <path d="M0,40 C200,80 400,0 600,50 C800,100 1000,10 1200,50 C1350,80 1420,30 1440,40 L1440,120 L0,120Z"/>
+  </svg>
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" fill="white">
+    <path d="M0,70 C150,30 350,90 550,55 C750,20 950,80 1150,50 C1320,25 1400,70 1440,60 L1440,120 L0,120Z"/>
+  </svg>
+</div>
+<div id="bubbles"></div>
+
+<!-- ====== LOGIN (tampil duluan) ====== -->
+<div id="login-page" class="login-wrap">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="login-logo-icon">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L4 6v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6l-8-4z" fill="#0a3d5c" opacity="0.9"/>
+          <circle cx="12" cy="11" r="3.5" fill="#0a3d5c"/>
+        </svg>
+      </div>
+      <div class="login-title">SIGAB-AI</div>
+      <div class="login-sub">Sistem Pengawasan Zona Bahaya Pantai</div>
+    </div>
+
+    <!-- Role tetap Admin -->
+    <div class="login-role-badge admin-mode">
+      🛡️ Masuk sebagai Admin
+    </div>
+
+    <div class="login-field">
+      <label>Email</label>
+      <input type="email" id="username" placeholder="admin@sigab-ai.com" />
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <div class="pass-wrap">
+        <input type="password" id="password" placeholder="••••••••" />
+        <button class="pass-toggle" onclick="toggleLoginPass()" type="button" id="login-toggle-btn">👁</button>
+      </div>
+    </div>
+
+    <div class="login-err" id="login-err"></div>
+
+    <button class="btn-login" id="btn-login-submit" onclick="doLogin()">
+      🛡️ Masuk sebagai Admin
+    </button>
+
+    <p class="login-hint" style="margin-top:1.1rem;">
+      Belum punya akun?
+      <a class="reg-link" onclick="showRegisterPage()">Daftar di sini</a>
+    </p>
+  </div>
+</div>
+
+<!-- ====== REGISTER (tersembunyi) ====== -->
+<div id="login-screen" class="login-wrap" style="display:none;">
+  <div class="reg-card">
+
+    <div class="login-brand">
+      <div class="login-logo-icon">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L4 6v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6l-8-4z" fill="#0a3d5c" opacity="0.9"/>
+          <circle cx="12" cy="11" r="3.5" fill="#0a3d5c"/>
+        </svg>
+      </div>
+      <div class="login-title">SIGAB-AI</div>
+      <div class="login-sub">Daftar Akun Baru — Sistem Pengawasan Pantai</div>
+    </div>
+
+    <!-- Role tetap Admin -->
+    <div class="login-role-badge admin-mode" style="margin-bottom:1.25rem;">
+      🛡️ Mendaftar sebagai Admin
+    </div>
+
+    <div class="reg-err" id="reg-err"></div>
+    <div class="reg-success" id="reg-success"></div>
+
+    <div class="reg-form-grid">
+      <div class="login-field">
+        <label>Nama Depan <span class="req">*</span></label>
+        <input type="text" id="r-fname" placeholder="I Wayan" />
+      </div>
+      <div class="login-field">
+        <label>Nama Belakang <span class="req">*</span></label>
+        <input type="text" id="r-lname" placeholder="Sudarsana" />
+      </div>
+    </div>
+
+    <div class="login-field">
+      <label>Email <span class="req">*</span></label>
+      <input type="email" id="r-email" placeholder="nama@sigab-ai.com" />
+    </div>
+
+    <div class="login-field">
+      <label>Password <span class="req">*</span></label>
+      <div class="pass-wrap">
+        <input type="password" id="r-pass" placeholder="Minimal 8 karakter" oninput="checkStrength()" />
+        <button class="pass-toggle" onclick="togglePass()" type="button" id="toggle-btn">👁</button>
+      </div>
+      <div class="strength-bar"><div class="strength-fill" id="s-fill"></div></div>
+      <small class="strength-label" id="s-label">Kekuatan password</small>
+    </div>
+
+    <div class="login-field">
+      <label>Konfirmasi Password <span class="req">*</span></label>
+      <input type="password" id="r-pass2" placeholder="Ulangi password" />
+    </div>
+
+    <div class="reg-divider"></div>
+
+    <div class="reg-form-grid">
+      <div class="login-field">
+        <label>ID Telegram</label>
+        <input type="text" id="r-telegram" placeholder="123456789" />
+        <small class="field-hint">Untuk notifikasi kejadian via Bot</small>
+      </div>
+      <div class="login-field">
+        <label>Status Awal</label>
+        <select id="r-online">
+          <option value="true">Sedang Bertugas</option>
+          <option value="false">Tidak Bertugas</option>
+        </select>
+      </div>
+    </div>
+
+    <input type="hidden" id="r-role" value="admin" />
+
+    <button class="btn-login" onclick="doRegister()">🌊 Buat Akun</button>
+
+    <p class="login-hint">
+      Sudah punya akun?
+      <a class="reg-link" onclick="showLoginPage()">Masuk di sini</a>
+    </p>
+  </div>
+</div>
+
+<!-- ====== DASHBOARD ====== -->
+<div id="dashboard" class="app" style="display:none;">
+  <div class="sidebar">
+    <div class="logo-area">
+      <div class="logo-icon-wrap">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L4 6v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6l-8-4z" fill="#0a3d5c"/>
+        </svg>
+      </div>
+      <div class="logo-title">SIGAB-AI</div>
+      <div class="logo-sub">Admin Panel</div>
+    </div>
+    <div class="nav-item active" id="nav-tambah" onclick="showPage('tambah')">
+      <div class="nav-icon-box">➕</div> Tambah User
+    </div>
+    <div class="nav-item" id="nav-list" onclick="showPage('list')">
+      <div class="nav-icon-box">👥</div> List User
+    </div>
+    <div class="nav-item" id="nav-log" onclick="showPage('log')">
+      <div class="nav-icon-box">🚨</div> Log Kejadian
+    </div>
+    <div class="nav-spacer"></div>
+    <div class="nav-item logout" onclick="doLogout()">
+      <div class="nav-icon-box" style="background:rgba(232,74,95,0.1);">🚪</div> Keluar
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="page-title" id="topbar-title">Tambah User</span>
+      <div class="topbar-right">
+        <div class="status-dot"></div>
+        <span class="status-txt">Sistem Aktif</span>
+        <div class="avatar-wrap" style="margin-left:12px;">
+          <div class="avatar" id="topbar-avatar">AD</div>
+          <span class="avatar-name" id="topbar-name">Admin</span>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- PAGE: TAMBAH USER -->
+      <div class="page active" id="page-tambah">
+        <div class="card">
+          <div class="card-title">
+            <div class="card-title-icon">🧑‍✈️</div>
+            Data User Baru
+          </div>
+          <div class="form-row two">
+            <div class="form-group">
+              <label>Nama Lengkap <span class="req">*</span></label>
+              <input type="text" id="f-nama" placeholder="I Wayan Sudarsana" />
+            </div>
+            <div class="form-group">
+              <label>Email <span class="req">*</span></label>
+              <input type="email" id="f-email" placeholder="nama@email.com" />
+            </div>
+          </div>
+          <div class="form-row two">
+            <div class="form-group">
+              <label>Role <span class="req">*</span></label>
+              <select id="f-role">
+                <option value="">Pilih role...</option>
+                <option value="admin">Admin</option>
+                <option value="pengawas">Pengawas</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Status Bertugas</label>
+              <select id="f-online">
+                <option value="true">Sedang Bertugas</option>
+                <option value="false">Tidak Bertugas</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>ID Telegram</label>
+              <input type="text" id="f-telegram" placeholder="Contoh: 123456789" />
+              <small style="color:rgba(255,255,255,0.3);font-size:11px;margin-top:4px;">Untuk notifikasi kejadian via Telegram Bot</small>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="tambahUser()">💾 Simpan User</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: LIST USER -->
+      <div class="page" id="page-list">
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-label">Total User</div>
+            <div class="stat-val" id="stat-total">0</div>
+            <div class="stat-sub">terdaftar</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🟢</div>
+            <div class="stat-label">Sedang Bertugas</div>
+            <div class="stat-val" id="stat-on">0</div>
+            <div class="stat-sub">is_online: true</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🛡️</div>
+            <div class="stat-label">Admin</div>
+            <div class="stat-val" id="stat-admin">0</div>
+            <div class="stat-sub">role admin</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">👮</div>
+            <div class="stat-label">Pengawas</div>
+            <div class="stat-val" id="stat-pengawas">0</div>
+            <div class="stat-sub">role pengawas</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="filter-row">
+            <input type="text" id="search-input" placeholder="🔍  Cari nama atau email..." oninput="renderTable()" />
+            <select id="filter-role" onchange="renderTable()">
+              <option value="">Semua role</option>
+              <option value="admin">Admin</option>
+              <option value="pengawas">Pengawas</option>
+            </select>
+            <select id="filter-online" onchange="renderTable()">
+              <option value="">Semua status</option>
+              <option value="true">Bertugas</option>
+              <option value="false">Tidak Bertugas</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nama</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>ID Telegram</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="table-body"></tbody>
+            </table>
+            <div class="empty-state" id="empty-state" style="display:none;">
+              <div class="empty-icon">🌊</div>
+              Belum ada user yang ditambahkan.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: LOG KEJADIAN -->
+      <div class="page" id="page-log">
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-icon">🚨</div>
+            <div class="stat-label">Total Kejadian</div>
+            <div class="stat-val" id="log-total">0</div>
+            <div class="stat-sub">kejadian</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⚠️</div>
+            <div class="stat-label">Belum Ditangani</div>
+            <div class="stat-val" id="log-pending">0</div>
+            <div class="stat-sub">perlu tindakan</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-label">Sudah Ditangani</div>
+            <div class="stat-val" id="log-done">0</div>
+            <div class="stat-sub">selesai</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="log-header">
+            <div class="card-title" style="margin:0;">
+              <div class="card-title-icon">📹</div>
+              Catatan Kejadian Sistem
+            </div>
+          </div>
+          <div class="log-grid" id="log-grid"></div>
+          <div class="empty-state" id="log-empty" style="display:none;">
+            <div class="empty-icon">📷</div>
+            Tidak ada log kejadian.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script type="module" src="script.js"></script>
+</body>
+</html>
